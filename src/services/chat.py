@@ -25,7 +25,7 @@ def get_relevant_context(query: str, vault_embeddings: torch.Tensor, vault_conte
     return [vault_content[idx].strip() for idx in top_indices]
 
 
-def ask_question(question: str, use_rag: bool = True) -> str:
+def ask_question(question: str, use_rag: bool = True, llm_params: dict = None) -> str:
     """Ask a question to the LLM with or without RAG"""
     conversation_history: List[dict] = []
 
@@ -36,7 +36,8 @@ def ask_question(question: str, use_rag: bool = True) -> str:
             system_message=SYSTEM_MESSAGE,
             vault_embeddings=vault_embeddings,
             vault_content=vault_content,
-            conversation_history=conversation_history
+            conversation_history=conversation_history,
+            llm_params=llm_params
         )
     else:
         response = chat_with_llm(
@@ -44,7 +45,8 @@ def ask_question(question: str, use_rag: bool = True) -> str:
             system_message=SYSTEM_MESSAGE,
             vault_embeddings=torch.tensor([]),
             vault_content=[],
-            conversation_history=conversation_history
+            conversation_history=conversation_history,
+            llm_params=llm_params
         )
 
     return response
@@ -55,11 +57,16 @@ def chat_with_llm(query: str,
                   vault_embeddings: torch.Tensor,
                   vault_content: List[str],
                   conversation_history: List[dict],
-                  model: str = LLM) -> str:
+                  model: str = LLM,
+                  llm_params: dict = None) -> str:
     """Main chat function with RAG capabilities."""
     conversation_history.append({"role": "user", "content": query})
 
     relevant_context = get_relevant_context(query, vault_embeddings, vault_content)
+
+    params = DEFAULT_LLM_PARAMS.copy()
+    if llm_params:
+        params.update(llm_params)
 
     if relevant_context:
         context_str = "\n".join(relevant_context)
@@ -77,7 +84,7 @@ def chat_with_llm(query: str,
     response = CLIENT.chat.completions.create(
         model=model,
         messages=messages,
-        **DEFAULT_LLM_PARAMS
+        **params
     )
 
     # Add assistant's response to conversation history

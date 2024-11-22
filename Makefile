@@ -35,14 +35,14 @@ build: ## Build and start all services
 setup: ## Setup the PDF document
 	$(COMPOSE) exec app python src/app.py -m setup
 
-ask: ## Ask a question using RAG (usage: make ask q="your question")
-	$(COMPOSE) exec app python src/app.py -m ask -q "$(q)"
+ask: ## Ask a question (usage: make ask q="question" t=0.7)
+	$(COMPOSE) exec app python src/app.py -m ask -q "$(q)" $(if $(t),-t $(t),)
 
 ask-demo: ## Ask a demo question
 	$(MAKE) ask q="What is the meaning of life according to Marcus Aurelius?"
 
-ask-no-rag: ## Ask a question without RAG (usage: make ask-no-rag q="your question")
-	$(COMPOSE) exec app python src/app.py -m ask-no-rag -q "$(q)"
+ask-no-rag: ## Ask without RAG (usage: make ask-no-rag q="question" t=0.7)
+	$(COMPOSE) exec app python src/app.py -m ask-no-rag -q "$(q)" $(if $(t),-t $(t),)
 
 ask-no-rag-demo: ## Ask a demo question without RAG
 	$(MAKE) ask-no-rag q="En quelles années l'équipe de France a gagné la Coupe du Monde ?"
