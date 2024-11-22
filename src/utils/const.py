@@ -1,7 +1,7 @@
 from openai import OpenAI
 
-LLM="llama3.2"
-FILE_NAME="MARCUS_AURELIUS.pdf"
+LLM = "llama3.2"
+FILE_NAME = "MARCUS_AURELIUS.pdf"
 
 PINK = '\033[95m'
 CYAN = '\033[96m'
