@@ -45,8 +45,7 @@ ask-no-rag: ## Ask a question without RAG (usage: make ask-no-rag q="your questi
 	$(COMPOSE) exec app python src/app.py -m ask-no-rag -q "$(q)"
 
 ask-no-rag-demo: ## Ask a demo question without RAG
-	#$(MAKE) ask-no-rag q="En quelles années l'équipe de France a gagné la Coupe du Monde ?"
-	$(MAKE) ask-no-rag q="Donne moi ta prediction pour le vainqeur du ballon d'or 2025 entre Mbappe et Vinicius ?"
+	$(MAKE) ask-no-rag q="En quelles années l'équipe de France a gagné la Coupe du Monde ?"
 
 demo: build pull-models setup ask-demo
 
