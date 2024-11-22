@@ -1,2 +1,5 @@
 gdown
 OpenAI
+PyPDF2
+ollama
+python-dotenv
