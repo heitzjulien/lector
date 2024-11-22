@@ -13,3 +13,9 @@ CLIENT = OpenAI(
     base_url='http://ollama:11434/v1',
     api_key=LLM
 )
+
+SYSTEM_MESSAGE = """You are a helpful AI assistant. When providing answers:
+- Use the provided context when relevant
+- Be concise and clear
+- If you're not sure about something, say so
+- If the context doesn't help answer the question, use your general knowledge"""
