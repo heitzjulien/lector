@@ -9,6 +9,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY requirements.txt .
 
+COPY .env .env
+
 RUN pip install --no-cache-dir -U pip && \
     pip install --no-cache-dir \
     --index-url https://download.pytorch.org/whl/cpu \
