@@ -13,6 +13,9 @@ def main():
     parser.add_argument('--question', '-q',
                         type=str,
                         help='Question to ask (required for ask modes)')
+    parser.add_argument('--temperature', '-t',
+                        type=float,
+                        help='LLM temperature (0.0 to 1.0)')
 
     if len(sys.argv) == 1:
         while True:
@@ -20,6 +23,10 @@ def main():
         return
 
     args = parser.parse_args()
+    llm_params = {}
+
+    if args.temperature is not None:
+        llm_params['temperature'] = args.temperature
 
     if args.mode == 'setup':
         setup_pdf()
@@ -27,7 +34,7 @@ def main():
     elif args.mode == 'ask':
         if not args.question:
             raise ValueError("Question is required for ask mode")
-        response = ask_question(args.question, use_rag=True)
+        response = ask_question(args.question, use_rag=True, llm_params=llm_params)
         print(f"\nAssistant: {response}")
 
     elif args.mode == 'ask-no-rag':
