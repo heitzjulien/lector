@@ -1,0 +1,37 @@
+services:
+  app:
+    build:
+      context: .
+    container_name: lector-app
+    depends_on:
+      - ollama
+    networks:
+      - lector-network
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: lector-ollama
+    platform: linux/arm64
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - lector-network
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+        reservations:
+          memory: 1G
+
+networks:
+  lector-network:
+    driver: bridge
+
+volumes:
+  ollama_data:
+    name: lector-ollama-data
